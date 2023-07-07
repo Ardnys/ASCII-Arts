@@ -50,24 +50,26 @@ def simple_ascii(images):
                 # print("avg val is " + str(avg_val))
                 if avg_val > 200:
                     # bright pixel
-                    ascii_matrix[i][j] = '# '
+                    pixel = Pixel([i, j, 0], '# ')
+                    ascii_matrix[i][j] = pixel
                     img1.write('  ')
                 else:
-                    ascii_matrix[i][j] = '  '
+                    pixel = Pixel([i, j, 0], '. ')
+                    ascii_matrix[i][j] = pixel
                     img1.write('# ')
             img1.write('\n')
-
+       
         # print_inconsole(ascii_matrix) 
 
-        rotated_matrix = uh(ascii_matrix)
+        # rotated_matrix = uh(ascii_matrix)
         # print_inconsole(rotated_matrix)
         # print(rotated_matrix)
 
 
 
 def uh(matrix):
-    cos_theta = int(cos(np.pi/2)) # 45 degrees
-    sin_theta = int(sin(np.pi/2))
+    cos_theta = round(cos(np.pi/4), 4) # 45 degrees
+    sin_theta = round(sin(np.pi/4), 4)
     Rx_matrix = [[1,      0,          0     ],
                  [0, cos_theta, -1*sin_theta],
                  [0, sin_theta, cos_theta  ]]
