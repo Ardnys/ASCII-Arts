@@ -36,15 +36,15 @@ def img_plot():
 
     plt.show()
 
-def dot_product(vec_1: list, vec_2: list) -> int:
+def dot_product(vec_1: list, vec_2: list) -> list:
     if len(vec_1) != len(vec_2):
         raise Exception("can't dot product different size vectors")
         # i don't even know if it's true but it feels like it
-    c = 0
+    vec = list()
     for i,j in zip(vec_1, vec_2):
-        c += i * j
+        vec.append(i * j)
     
-    return c
+    return vec
 
 def uh(matrix):
     cos_theta = int(cos(np.pi/2)) # 45 degrees
@@ -64,11 +64,12 @@ def uh(matrix):
         for i in range(len(Rx_matrix)):
             c = dot_product(Rx_matrix[i], x)
             transformed_vectors.append(c)
-    ctr = 0
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            matrix[i, j] = transformed_vectors[ctr]
-            ctr += 1
+            print(f'prev coord: {x}\nnew coord: {c}')
+    # ctr = 0
+    # for i in range(len(matrix)):
+    #     for j in range(len(matrix[0])):
+    #         matrix[i, j] = transformed_vectors[ctr]
+    #         ctr += 1
 
     return matrix
 
@@ -104,6 +105,6 @@ def simple_ascii():
         # print_inconsole(ascii_matrix) 
 
         rotated_matrix = uh(ascii_matrix)
-        print_inconsole(rotated_matrix)
+        # print_inconsole(rotated_matrix)
         # print(rotated_matrix)
 simple_ascii()
