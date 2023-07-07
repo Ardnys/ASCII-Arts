@@ -7,15 +7,18 @@ import sys
 
 np.set_printoptions(threshold=sys.maxsize)
 
-image_path = "images"
-images = list()
 
-for file in Path(image_path).iterdir():
-    if not file.is_file():
-        continue
+def get_them_imgs(image_path: str) -> list:
+    images = list()
 
-    images.append(iio.imread(file))
-    print("read " + file.name)
+    for file in Path(image_path).iterdir():
+        if not file.is_file():
+            continue
+
+        images.append(iio.imread(file))
+        print("read " + file.name)
+
+    return images
 
 def print_inconsole(matrix):
     for i in range(len(matrix)):
@@ -23,7 +26,7 @@ def print_inconsole(matrix):
             print(matrix[i][j], end="")
         print()
 
-def img_plot():
+def img_plot(images: list):
     fig, ax = plt.subplots(2, 3)
 
     img_idx = 0
@@ -74,7 +77,7 @@ def uh(matrix):
     return matrix
 
 # just the dots
-def simple_ascii():
+def simple_ascii(images):
     img = images[4]
     nrows = len(img)
     ncols = len(img[0])
@@ -107,4 +110,8 @@ def simple_ascii():
         rotated_matrix = uh(ascii_matrix)
         # print_inconsole(rotated_matrix)
         # print(rotated_matrix)
-simple_ascii()
+
+if __name__ == '__main__':
+    # i guess i'd rather public static void main string args
+    images = get_them_imgs("images")
+    simple_ascii(images)
