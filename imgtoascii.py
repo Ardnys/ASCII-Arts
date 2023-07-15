@@ -22,17 +22,22 @@ of course lines aren't smooth. just / or consecutive dots.
 
 
 '''
+class CoordinatePlane:
+    def __init__(self) -> None:
+        pass      
+
 
 class Pixel:
-    def __init__(self, coords: list, char: str) -> None:
-        self.coords = coords
+    def __init__(self, indexes: list, char: str) -> None:
+        self.indexes = indexes
         self.char = char
+        # cartesian indexes and indexes
 
     def __str__(self) -> str:
-        return f'coords: {self.coords}\nchar: {self.char}'
+        return f'indexes: {self.indexes}\nchar: {self.char}'
     
-    def set_coords(self, coords: list):
-        self.coords = coords
+    def set_indexes(self, indexes: list):
+        self.indexes = indexes
     
     def set_char(self, char: str):
         self.char = char
@@ -107,11 +112,11 @@ def uh(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
             for x in range(len(Rx_matrix)):
-                points = matrix[i, j].coords
-                print(f'prev coords: {points}')
+                points = matrix[i, j].indexes
+                print(f'prev indexes: {points}')
                 c = dot_product(points, Rx_matrix[x])
                 print(f'new coord: {c}')
-                matrix[i, j].set_coords(c)
+                matrix[i, j].set_indexes(c)
 
     # transformed_vectors = list()
     # for x in column_vectors:
@@ -145,12 +150,12 @@ def freebird(matrix):
     new_matrix = np.empty((len(matrix), len(matrix[0])), dtype=Pixel)
     for i, row in enumerate(matrix):
         for j, element in enumerate(row):
-            coords = element.coords
-            x = int(coords[0])
-            y = int(coords[1])
+            indexes = element.indexes
+            x = int(indexes[0])
+            y = int(indexes[1])
             if x < len(new_matrix) and y < len(new_matrix[0]):
                 new_matrix[x, y] = element
-                # print(f'change coords from ({i},{j}) to ({x},{y})')
+                # print(f'change indexes from ({i},{j}) to ({x},{y})')
 
             else:
                 print("oops. out of bounds")
