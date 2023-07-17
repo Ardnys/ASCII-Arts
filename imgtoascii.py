@@ -1,5 +1,5 @@
 import numpy as np
-import imageio.v3 as iio 
+import imageio.v3 as iio
 import matplotlib.pyplot as plt
 from pathlib import Path
 from math import cos, sin
@@ -22,9 +22,11 @@ of course lines aren't smooth. just / or consecutive dots.
 
 
 '''
+
+
 class CoordinatePlane:
     def __init__(self) -> None:
-        pass      
+        pass
 
 
 class Pixel:
@@ -35,13 +37,13 @@ class Pixel:
 
     def __str__(self) -> str:
         return f'indexes: {self.indexes}\nchar: {self.char}'
-    
+
     def set_indexes(self, indexes: list):
         self.indexes = indexes
-    
+
     def set_char(self, char: str):
         self.char = char
-    
+
 
 def get_them_imgs(image_path: str) -> list:
     images = list()
@@ -56,6 +58,8 @@ def get_them_imgs(image_path: str) -> list:
     return images
 
 # just the dots
+
+
 def simple_ascii(images):
     img = images[3]
     nrows = len(img)
@@ -85,8 +89,8 @@ def simple_ascii(images):
                     ascii_matrix[i][j] = pixel
                     img1.write('# ')
             img1.write('\n')
-       
-        # print_inconsole(ascii_matrix) 
+
+        # print_inconsole(ascii_matrix)
 
         # rotated_matrix = uh(ascii_matrix)
         # print_inconsole(rotated_matrix)
@@ -95,14 +99,13 @@ def simple_ascii(images):
     return ascii_matrix
 
 
-
-def uh(matrix):  
-    cos_theta = round(cos(np.pi/4), 4) # 45 degrees
+def uh(matrix):
+    cos_theta = round(cos(np.pi/4), 4)  # 45 degrees
     sin_theta = round(sin(np.pi/4), 4)
-    Rx_matrix = [[1,      0,          0     ],
+    Rx_matrix = [[1,      0,          0],
                  [0, cos_theta, -1*sin_theta],
-                 [0, sin_theta, cos_theta  ]]
-    
+                 [0, sin_theta, cos_theta]]
+
     # column_vectors = list()
     # # add third dimension
     # for i in range(len(matrix)):
@@ -131,15 +134,17 @@ def uh(matrix):
     #         ctr += 1
     # return transformed_vectors
 
+
 def dot_product(vec_1: list, vec_2: list) -> list:
     if len(vec_1) != len(vec_2):
         raise Exception("can't dot product different size vectors")
         # i don't even know if it's true but it feels like it
     vec = list()
-    for i,j in zip(vec_1, vec_2):
+    for i, j in zip(vec_1, vec_2):
         vec.append(i * j)
-    
+
     return vec
+
 
 def freebird(matrix):
     '''
@@ -162,11 +167,13 @@ def freebird(matrix):
 
     return new_matrix
 
+
 def print_inconsole(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
             print(matrix[i, j].char, end="")
         print()
+
 
 def write_to_file(matrix):
     with open("img1.txt", "w") as f:
@@ -178,6 +185,7 @@ def write_to_file(matrix):
                 # else:
                 f.write(matrix[i, j].char)
             f.write('\n')
+
 
 def img_plot(images: list):
     fig, ax = plt.subplots(2, 3)
@@ -193,7 +201,6 @@ def img_plot(images: list):
     plt.show()
 
 
-
 if __name__ == '__main__':
     # i guess i'd rather public static void main string args
     images = get_them_imgs("images")
@@ -203,4 +210,3 @@ if __name__ == '__main__':
     # new_matrix = freebird(matrix)
     # write_to_file(new_matrix)
     # print_inconsole(matrix)
-
