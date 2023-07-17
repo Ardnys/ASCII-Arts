@@ -32,10 +32,10 @@ def create_point_matrix(img):
             avg_val = np.mean(img[i][j])
 
             if avg_val > 200:
-                p = Point('#', (i,j))
+                p = Point('# ', (i,j))
                 ascii_matrix[i,j] = p
             else:
-                p = Point('.', (i,j))
+                p = Point('. ', (i,j))
                 ascii_matrix[i,j] = p
 
     return ascii_matrix
@@ -45,6 +45,11 @@ def calculate_coords(mat):
     hmid = int(len(mat[0]) / 2)
 
     print(f'vertical: {vmid}, horizontal: {hmid}')
+
+    for i in range(len(m)):
+        for j in range(len(m[0])):
+            x, y = i - 25, j - 25
+            m[i, j].set_coords((x, y))
 
 
 def print_inconsole(matrix):
@@ -56,5 +61,7 @@ def print_inconsole(matrix):
 
 img = iio.imread("images\\notnotathreat.png")
 m = create_point_matrix(img)
-print_inconsole(m)
+# print_inconsole(m)
 calculate_coords(m)
+m[25,25].char = '$ '  # this is the origin if you will
+print_inconsole(m)
