@@ -32,7 +32,9 @@ class Point:
 
 def create_frames(img):
     default_matrix = create_point_matrix(img)
-    rotations = np.linspace(0, np.pi*2, 15)
+    rotations = np.linspace(0, np.pi*2, 48)
+    fps = 24
+
     # frames = list()
 
     for rotation in rotations:
@@ -41,10 +43,9 @@ def create_frames(img):
         rotate(mat, rotation)
         mat = calc_indexes(mat)
         print_inconsole(mat)
-        time.sleep(1)
+        time.sleep(1.0/fps)
         clear_console()
-
-
+        # print('\033c')
 
 def create_point_matrix(img):
     nrows = len(img)
@@ -70,7 +71,7 @@ def calculate_coords(mat):
     vmid = int(len(mat) / 2)
     hmid = int(len(mat[0]) / 2)
 
-    print(f'vertical: {vmid}, horizontal: {hmid}')
+    # print(f'vertical: {vmid}, horizontal: {hmid}')
 
     # when you subtract, the x and y are switched places
     for i in range(len(mat)):
