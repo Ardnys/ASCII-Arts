@@ -30,15 +30,24 @@ class Point:
     def set_rotated_coords(self, r_coords):
         self.rotated_coords = r_coords
 
+def play_anim(frames):
+    fps = 24
+    clear_console()
+    prev = frames[0]
+    frames.pop(0)
+    for frame in frames:
+        update_console(prev, frame)
+        prev = frame
+        time.sleep(1.0/fps)
+
+    
+        
 def create_frames(img):
     default_matrix = create_point_matrix(img)
-    rotations = np.linspace(0, np.pi*2, 64)
-    fps = 32 
+    rotations = np.linspace(0, np.pi*2, 96)
 
-    prev = default_matrix
-    # frames = list()
-    clear_console()
-    print_inconsole(default_matrix)
+    frames = list()
+    frames.append(default_matrix)
     # move(0, 0)
     # print("1")
     # time.sleep(4)
@@ -48,12 +57,9 @@ def create_frames(img):
         calculate_coords(mat)
         rotate(mat, rotation)
         mat = calc_indexes(mat)
-        # print_inconsole(mat)
-        time.sleep(1.0/fps)
-        # clear_console()
-        update_console(prev, mat)
-        prev = mat
-        
+        frames.append(mat)
+        print("processing...")
+    return frames
 
 def update_console(prev, new):
     # it's kinda like double buffering
@@ -131,7 +137,7 @@ def rotate(matrix, angle):
     Rz_matrix = np.array([[ cos_theta,-sin_theta,  0],
                           [ sin_theta, cos_theta,  0],
                           [ 0,          0,         1]])
-    M = Rz_matrix
+    M = Ry_matrix
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
             for x in range(len(M)):
@@ -191,8 +197,9 @@ def clear_console():
         _ = os.system('clear')
 
 
-img = iio.imread("images\\notathreat50.png")
-create_frames(img)
+img = iio.imread("images\\notathreat100.png")
+frames = create_frames(img)
+play_anim(frames)
 
 
 # m = create_point_matrix(img)
