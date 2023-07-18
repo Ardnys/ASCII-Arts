@@ -64,16 +64,21 @@ def calculate_coords(mat):
 def rotate(matrix):
     cos_theta = round(cos(np.pi/4), 4)  # 45 degrees
     sin_theta = round(sin(np.pi/4), 4)
-    Rx_matrix = np.array([[1,      0,          0],
-                 [0, cos_theta, -sin_theta],
-                 [0, sin_theta, cos_theta]])
-
+    Rx_matrix = np.array([[1,         0,          0],
+                          [0, cos_theta, -sin_theta],
+                          [0, sin_theta,  cos_theta]])
+    Ry_matrix = np.array([[cos_theta, 0,  sin_theta],
+                          [0,         1,          0],
+                          [-sin_theta, 0, cos_theta]])
+    Rz_matrix = np.array([[cos_theta,-sin_theta,  0],
+                          [sin_theta, cos_theta,  0],
+                          [0,          0,         1]])
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
-            for x in range(len(Rx_matrix)):
+            for x in range(len(Rz_matrix)):
                 points = np.asarray(list(matrix[i, j].coords))
 
-                rotated_coords = np.dot(Rx_matrix, points)
+                rotated_coords = np.dot(Rz_matrix, points)
                 rotated_coords = np.around(rotated_coords)
                 rotated_coords = rotated_coords.astype(int)
                 # print(f'prev indexes: {points}')
@@ -99,12 +104,13 @@ def print_inconsole(matrix):
             print(matrix[i, j].char, end="")
         print()
 
+
 def calc_indexes(matrix):
     nrows = len(matrix)
     ncols = len(matrix[0])
 
     ascii_matrix = np.empty((nrows, ncols), dtype=Point)
-    
+
     for i in range(nrows):
         for j in range(ncols):
             p = matrix[i, j]
@@ -124,8 +130,9 @@ def calc_indexes(matrix):
                 ascii_matrix[i, j] = Point("  ", (i, j))
                 print("  ", end="")
             else:
-                print(ascii_matrix[i,j].char, end="")
+                print(ascii_matrix[i, j].char, end="")
         print()
+
 
 img = iio.imread("images\\notnotathreat.png")
 m = create_point_matrix(img)
