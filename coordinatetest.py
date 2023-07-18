@@ -32,20 +32,59 @@ class Point:
 
 def create_frames(img):
     default_matrix = create_point_matrix(img)
-    rotations = np.linspace(0, np.pi*2, 48)
-    fps = 24
+    rotations = np.linspace(0, np.pi*2, 64)
+    fps = 32 
 
+    prev = default_matrix
     # frames = list()
+    clear_console()
+    print_inconsole(default_matrix)
+    # move(0, 0)
+    # print("1")
+    # time.sleep(4)
 
     for rotation in rotations:
         mat = deepcopy(default_matrix)
         calculate_coords(mat)
         rotate(mat, rotation)
         mat = calc_indexes(mat)
-        print_inconsole(mat)
+        # print_inconsole(mat)
         time.sleep(1.0/fps)
-        clear_console()
-        # print('\033c')
+        # clear_console()
+        update_console(prev, mat)
+        prev = mat
+        
+
+def update_console(prev, new):
+    # it's kinda like double buffering
+    for i in range(len(prev)):
+        for j in range(len(prev)):
+            if prev[i, j] is None:
+                if new[i, j] is None:
+                    continue
+                else:
+                    move(i, j)
+                    print(new[i, j].char, end='')
+            elif new[i, j] is None:
+                move(i, j)
+                print(' ', end='')
+   
+            elif prev[i, j].char == new[i, j].char:
+                continue
+
+            else:
+                move(i, j)
+                print(new[i, j].char, end='')
+
+        move(i, len(prev))
+        print()
+
+
+def move_cursor_windows(x, y):
+    _ = os.system(f'cmd /c echo \033[{y};{x}H')
+
+def move (y, x):
+    print("\033[%d;%dH" % (y, x), end='')    
 
 def create_point_matrix(img):
     nrows = len(img)
@@ -58,10 +97,10 @@ def create_point_matrix(img):
             avg_val = np.mean(img[i][j])
 
             if avg_val > 200:
-                p = Point('# ', (i, j))
+                p = Point('#', (i, j))
                 ascii_matrix[i, j] = p
             else:
-                p = Point('. ', (i, j))
+                p = Point('.', (i, j))
                 ascii_matrix[i, j] = p
 
     return ascii_matrix
@@ -92,7 +131,7 @@ def rotate(matrix, angle):
     Rz_matrix = np.array([[ cos_theta,-sin_theta,  0],
                           [ sin_theta, cos_theta,  0],
                           [ 0,          0,         1]])
-    M = Ry_matrix
+    M = Rz_matrix
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
             for x in range(len(M)):
@@ -137,8 +176,8 @@ def print_inconsole(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
             if matrix[i, j] is None:
-                matrix[i, j] = Point("  ", (i, j))
-                print("  ", end="")
+                matrix[i, j] = Point(" ", (i, j))
+                print(" ", end="")
             else:
                 print(matrix[i, j].char, end="")
         print()
