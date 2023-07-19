@@ -196,8 +196,11 @@ def clear_console():
     else:
         _ = os.system('clear')
 
-
-img = iio.imread("images\\notathreat100.png")
+project_dir = os.path.dirname(__file__)
+images_dir = os.path.join(project_dir, "images")
+image_name = "notathreat50.png"
+image_path = os.path.join(images_dir, image_name)
+img = iio.imread(image_path)
 frames = create_frames(img)
 play_anim(frames)
 
