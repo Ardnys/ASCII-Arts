@@ -3,6 +3,7 @@ import imageio.v3 as iio
 import sys
 import os
 import time
+from cv2 import resize, INTER_CUBIC
 from math import cos, sin
 from copy import deepcopy
 np.set_printoptions(threshold=sys.maxsize)
@@ -46,21 +47,25 @@ def create_frames(img):
     default_matrix = create_point_matrix(img)
     rotations = np.linspace(0, np.pi*2, 96)
 
-    frames = list()
-    frames.append(default_matrix)
-    # move(0, 0)
-    # print("1")
-    # time.sleep(4)
+    # frames = list()
+    # frames.append(default_matrix)
+    
+    fps = 24
+    clear_console()
+    prev = default_matrix
 
     for rotation in rotations:
         mat = deepcopy(default_matrix)
         calculate_coords(mat)
         rotate(mat, rotation)
         mat = calc_indexes(mat)
-        frames.append(mat)
-        print("processing...")
-    return frames
 
+        update_console(prev, mat)
+        prev = mat
+        time.sleep(1.0/fps)
+        # frames.append(mat)
+        # print("processing...")
+    # return frames
 def update_console(prev, new):
     # it's kinda like double buffering
     for i in range(len(prev)):
@@ -103,10 +108,10 @@ def create_point_matrix(img):
             avg_val = np.mean(img[i][j])
 
             if avg_val > 200:
-                p = Point('#', (i, j))
+                p = Point('$', (i, j))
                 ascii_matrix[i, j] = p
             else:
-                p = Point('.', (i, j))
+                p = Point('`', (i, j))
                 ascii_matrix[i, j] = p
 
     return ascii_matrix
@@ -198,11 +203,12 @@ def clear_console():
 
 project_dir = os.path.dirname(__file__)
 images_dir = os.path.join(project_dir, "images")
-image_name = "notathreat50.png"
+image_name = "notathreat100.png"
 image_path = os.path.join(images_dir, image_name)
 img = iio.imread(image_path)
-frames = create_frames(img)
-play_anim(frames)
+img = resize(img, dsize=(50,50), interpolation=INTER_CUBIC)
+create_frames(img)
+# play_anim(frames)
 
 
 # m = create_point_matrix(img)
