@@ -45,7 +45,10 @@ def play_anim(frames):
         
 def create_frames(img):
     default_matrix = create_point_matrix(img)
-    rotations = np.linspace(0, np.pi*2, 96)
+    frame_num = 96
+    rotations_x = np.linspace(0, np.pi*2, frame_num)
+    rotations_y = np.linspace(np.pi/3, np.pi, frame_num)
+    rotations_z = np.linspace(0, np.pi/2, frame_num)
 
     # frames = list()
     # frames.append(default_matrix)
@@ -54,10 +57,10 @@ def create_frames(img):
     clear_console()
     prev = default_matrix
 
-    for rotation in rotations:
+    for (rx, ry, rz) in zip(rotations_x, rotations_y, rotations_z):
         mat = deepcopy(default_matrix)
         calculate_coords(mat)
-        rotate(mat, rotation)
+        rotate(mat, rx, ry, rz)
         mat = calc_indexes(mat)
 
         update_console(prev, mat)
@@ -130,19 +133,25 @@ def calculate_coords(mat):
             mat[i, j].set_coords((y, x, 0))
 
 
-def rotate(matrix, angle):
-    cos_theta = round(cos(angle), 4)  # 45 degrees
-    sin_theta = round(sin(angle), 4)
+def rotate(matrix, angle_x, angle_y, angle_z):
+    cos_theta_x = round(cos(angle_x), 4)  
+    sin_theta_x = round(sin(angle_x), 4)
+    cos_theta_y = round(cos(angle_y), 4)  
+    sin_theta_y = round(sin(angle_y), 4)   
+    cos_theta_z = round(cos(angle_z), 4)  
+    sin_theta_z = round(sin(angle_z), 4)
+
     Rx_matrix = np.array([[1,          0,          0],
-                          [0,  cos_theta, -sin_theta],
-                          [0,  sin_theta,  cos_theta]])
-    Ry_matrix = np.array([[cos_theta,  0,  sin_theta],
+                          [0,  cos_theta_x, -sin_theta_x],
+                          [0,  sin_theta_x,  cos_theta_x]])
+    Ry_matrix = np.array([[cos_theta_y,  0,  sin_theta_y],
                           [0,          1,          0],
-                          [-sin_theta, 0, cos_theta]])
-    Rz_matrix = np.array([[ cos_theta,-sin_theta,  0],
-                          [ sin_theta, cos_theta,  0],
+                          [-sin_theta_y, 0, cos_theta_y]])
+    Rz_matrix = np.array([[ cos_theta_z,-sin_theta_z,  0],
+                          [ sin_theta_z, cos_theta_z,  0],
                           [ 0,          0,         1]])
-    M = np.dot(Rx_matrix, Rz_matrix) 
+    M = np.dot(Rx_matrix, Ry_matrix, Rz_matrix) 
+    # M = Ry_matrix
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
             for x in range(len(M)):
