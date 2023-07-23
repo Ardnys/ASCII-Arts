@@ -2,9 +2,9 @@
 Image to ASCII art with 6 or 7 languages with some *sprinkles* on top 
 
 **Languages**
-- Python 
+- ~~Python~~ 
 - Java
-- C
+- **C** (currently working on)
 - Rust
 - C#
 - Julia
