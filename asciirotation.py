@@ -45,6 +45,9 @@ def play_anim(frames):
         
 def create_frames(img):
     default_matrix = create_point_matrix(img)
+    # write to file for C hehe
+    # write_to_txt(default_matrix)
+
     frame_num = 96
     rotations_x = np.linspace(0, np.pi*2, frame_num)
     rotations_y = np.linspace(np.pi/3, np.pi, frame_num)
@@ -191,6 +194,14 @@ def calc_indexes(matrix):
     #         else:
     #             print(ascii_matrix[i, j].char, end="")
     #     print()
+
+def write_to_txt(matrix):
+    with open("threat.txt", 'w') as f:
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                c = matrix[i][j].char
+                f.write(c)
+            f.write('\n')
 
 def print_inconsole(matrix):
     for i in range(len(matrix)):
