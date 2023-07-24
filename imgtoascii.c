@@ -1,25 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-typedef struct {
-    int idx_x;
-    int idx_y;
-    int coords[3];
-    int r_coords[3];
-    char c;
-} Point;
-
-Point newPoint(char c, int i, int j, int mid) {
-    Point p;
-    p.c = c;
-    p.idx_x = i;
-    p.idx_y = j;
-    p.coords[0] = j - mid;
-    p.coords[1] = i - mid;
-    p.coords[2] = 0;
-    return p;
-}
+#include "point.h"
 
 FILE* file; 
 
@@ -66,7 +48,7 @@ int main() {
         } while (1);
         for (int i = 0; i < 50; i++) {
             for (int j = 0; j < 50; j++) {
-                printf("Point: (%d, %d)\n", pmat[i * matrix_length + j].coords[0], pmat[i * matrix_length + j].coords[1]);
+                printf("%c", pmat[i * matrix_length + j].c);
             }
             printf("\n");
         }
