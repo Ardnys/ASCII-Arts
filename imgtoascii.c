@@ -5,7 +5,10 @@
 #include "intmatrix.h"
 
 FILE* file;
+
 void mahmut(IntMatrix* mat1, IntMatrix* mat2, IntMatrix* res);
+void prontVec(int* vec, int len, const char* naem);
+int dot_prod(int* vec1, int* vec2, int len);
 
 int main() {
 	// let's assume we are only dealing with square images / matrices
@@ -70,14 +73,19 @@ int main() {
 		}
 	}
 	free(pmat);
+	int bar[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 }; 
+	int baz[9] = { 3, 5, 7, 2, 1, 4, 6, 2, 4 };
+	int arr[6] = { 1, 2, 3, 4, 5, 6 };
+	int foo[6] = { 3, 5, 7, 2, 1, 4 };
+	int one[2] = { 2, 4 };
+	int two[2] = { 3, 5 };
 
 	IntMatrix mat1, mat2, result;
-	int arr[6] = { 1, 2, 3, 4, 5, 6 };
-	initIntMatrix(&mat1, 2, 3, arr, 6);
+	
+	initIntMatrix(&mat1, 1, 2, one, 2);
 	print(&mat1);
-
-	int foo[6] = { 3, 5, 7, 2, 1, 4 };
-	initIntMatrix(&mat2, 3, 2, foo, 6);
+	
+	initIntMatrix(&mat2, 2, 1, two, 2);
 	print(&mat2);
 
 	mahmut(&mat1, &mat2, &result);
@@ -114,23 +122,29 @@ void mahmut(IntMatrix* mat1, IntMatrix* mat2, IntMatrix* res) {
 	int sum = 0;
 	int ctr = 0;
 
-	for (int i = 0; i < mat1->cols-1; i++) {
-		for (int j = 0; j < mat2->rows; j++) {
-			int v2val = mat2->values[j * mat2->cols + i];
-			v1[j] = mat1->values[i * mat1->rows + j];
-			v2[j] = v2val;
-			printf("v1[%d] -> %d\nv2[%d] -> %d\n", j, mat1->values[i * mat1->cols + j], j, v2val);
+	printf("mat1row: %d\n", mat1->rows);
+
+	for (int i = 0; i < mat1->rows; i++) {
+		for (int j = 0; j < mat1->cols; j++) {
+			int v1val = mat1->values[i * mat1->cols + j];
+			printf("idx: %d\n", i * mat1->cols + j);
+			v1[j] = v1val;
 		} 
-		printf("\n");
-		sum = dot_prod(v1, v2, 3);
-		resVal[ctr++] = sum;
-		
-		/*
-		* that's not how matrix multiplication works
-		* it's like 
-		* ith row * 0..cols  
-		* so a bit more complicated than this. but anyway at least i figured out subscript logic thing
-		*/
+		printf("------ v1 now ------\n");
+		prontVec(v1, mat1->cols, "v1");
+		for (int k = 0; k < mat2->cols; k++) {
+			for (int l = 0; l < mat2->rows; l++) {
+				int v2val = mat2->values[l * mat2->cols + k];
+				v2[l] = v2val;
+				//printf("v1[%d] -> %d\nv2[%d] -> %d\n", l, mat1->values[k * mat1->cols + l], l, v2val);
+			}
+			printf("--- v1 x v2 ---\n");
+			prontVec(v1, mat1->cols, "v1");
+			prontVec(v2, mat2->rows, "v2");
+			// printf("\n");
+			sum = dot_prod(v1, v2, mat1->cols); 
+			resVal[ctr++] = sum;
+		}
 	}
 	initIntMatrix(res, mat1->rows, mat2->cols, resVal, mat1->rows * mat2->cols);
 }
@@ -141,4 +155,11 @@ int dot_prod(int* vec1, int* vec2, int len) {
 		sum += vec1[i] * vec2[i];
 	}
 	return sum;
+}
+
+void prontVec(int* vec, int len, const char* naem) {
+	for (int i = 0; i < len; i++) {
+		printf("%s[%d]: %d\n", naem, i, vec[i]);
+	}
+	printf("\n");
 }
