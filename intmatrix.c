@@ -33,13 +33,6 @@ int get(IntMatrix* matrix, int i, int j) {
 	}
 
 }
-int* getRow(IntMatrix* matrix, int* row, int i) {
-
-}
-
-int* getCol(IntMatrix* matrix, int* col, int j) {
-
-}
 
 void freeValues(IntMatrix* matrix) {
 	free(matrix->values);

@@ -1,11 +1,13 @@
 #pragma once
+#include "intmatrix.h"
 
 typedef struct {
     int idx_x;
     int idx_y;
-    int coords[3];
-    int r_coords[3];
+    IntMatrix coords;
+    IntMatrix r_coords;
     char c;
 } Point;
 
 Point newPoint(char c, int i, int j, int mid);
+void set_r_coords(Point* p, IntMatrix* r_coords);

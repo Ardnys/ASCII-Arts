@@ -1,4 +1,6 @@
 #pragma once
+#include "intmatrix.h";
 
-int* matrix_multiplication(int* matrix_a, int* matrix_b);
-int* dot_product(int* vector_a, int* vector_b);
+void mat_multiply(IntMatrix* mat1, IntMatrix* mat2, IntMatrix* res);
+int dot_prod(int* vec1, int* vec2, int len);
+void prontVec(int* vec, int len, const char* name);
