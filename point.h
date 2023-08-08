@@ -12,3 +12,4 @@ typedef struct {
 Point newPoint(char c, int i, int j, int mid);
 void set_r_coords(Point* p, Matrix* r_coords);
 void rotate(Point* p, double angle);
+void prontPoint(Point* p);
