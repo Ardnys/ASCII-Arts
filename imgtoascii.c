@@ -5,23 +5,28 @@
 #include "matrix.h"
 #include "mafs.h"
 
+#define clear() printf("\033[H\033[J")
+#define gotoxy(x,y) printf("\033[%d;%dH", (x), (y))
+
 double PI = 3.14159265;
+long long len = 50;
 
 FILE* file;
 
-
+void printImage(Point* points);
+void rotateThemPoints(Point* points);
 
 int getImg() {
 	// let's assume we are only dealing with square images / matrices
-	long long matrix_length = 50; // overkill but VS yells at me
-	Point* pmat = (Point*)malloc(matrix_length * matrix_length * sizeof(Point));
+	long long len = 50; // overkill but VS yells at me
+	Point* pmat = (Point*)malloc(len * len * sizeof(Point));
 
 	if (pmat == NULL) {
 		printf("something went wrong with malloc\n");
 		return 1;
 	}
 
-	for (int i = 0; i < matrix_length * matrix_length; i++)
+	for (int i = 0; i < len * len; i++)
 	{
 		pmat[i] = newPoint(' ', -1, -1, -1);
 	}
@@ -43,20 +48,15 @@ int getImg() {
 			if (feof(file)) {
 				break;
 			}
-			Point p = newPoint(c, j, uh, matrix_length / 2);
+			Point p = newPoint(c, j, uh, len / 2);
 			pmat[i] = p;
 			i++;
 			uh++;
-			if (i % matrix_length == 0) {
+			if (i % len == 0) {
 				j++;
 			}
 		} while (1);
-		for (int i = 0; i < 50; i++) {
-			for (int j = 0; j < 50; j++) {
-				printf("%c", pmat[i * matrix_length + j].c);
-			}
-			printf("\n");
-		}
+		printImage(pmat);
 	}
 	else {
 		fprintf(stderr, "file couldn't be opened\n");
@@ -72,13 +72,54 @@ int getImg() {
 		}
 	}
 
-	Point p = pmat[78];
-	prontPoint(&p);
 	double angle = PI / 4;
-	rotate(&p, angle);
+	clear();
+	rotateThemPoints(pmat, angle);
+	// printImage(pmat);
+	 
+
+	/*Point p = pmat[78];
 	prontPoint(&p);
+	
+	rotate(&p, angle);
+	prontPoint(&p);*/
 
 	free(pmat);
+}
+
+/*
+void uh(Point* points) {
+	for (int i = 0; i < len; i++) {
+		for (int j = 0; j < len; j++) {
+
+		}
+	}
+}
+
+*/
+
+void rotateThemPoints(Point* points, double angle) {
+	for (int i = 0; i < len; i++) {
+		for (int j = 0; j < len; j++) {
+			rotate(&points[i * len + j], angle);
+			calculate_index(&points[i * len + j], len / 2);
+			gotoxy(points[i * len + j].idx_x, points[i * len + j].idx_y);
+			char c = points[i * len + j].c;
+			printf("%c%c%c", c, c, c);
+		}
+	}
+}
+
+
+void printImage(Point* points) {
+	clear();
+	for (int i = 0; i < len; i++) {
+		for (int j = 0; j < len; j++) {
+			char c = points[i * len + j].c;
+			printf("%c%c%c", c, c, c);
+		}
+		printf("\n");
+	}
 }
 
 int main() {

@@ -41,8 +41,16 @@ void rotate(Point* p, double angle) {
 	initMatrix(&ry_matrix, 3, 3, ry, 9);
 	initMatrix(&rz_matrix, 3, 3, rz, 9);
 
-	mat_multiply(&rx_matrix, &p->coords, &p->r_coords);
+	mat_multiply(&ry_matrix, &p->coords, &p->r_coords);
+}
 
+void calculate_index(Point* p, int mid) {
+	int x = p->r_coords.values[0] + mid;
+	int y = p->r_coords.values[1] + mid;
+	if (x >= 0 && x < mid * 2 && y >= 0 && y < mid * 2) {
+		p->idx_x = y;
+		p->idx_y = x;
+	}
 }
 
 void prontPoint(Point* p) {
