@@ -11,7 +11,7 @@ Point newPoint(char c, int i, int j, int mid) {
 	Matrix coords;
 	Matrix r_coords;
 	double co[3] = { j - mid, i - mid, 0 };
-	initMatrix(&coords, 1, 3, co, 3);
+	initMatrix(&coords, 3, 1, co, 3);
 	// initMatrix(&r_coords, 1, 3, co, 3);
 	p.coords = coords;
 	// p.r_coords = r_coords;

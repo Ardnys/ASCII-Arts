@@ -73,7 +73,7 @@ int getImg() {
 	}
 
 	Point p = pmat[78];
-	// prontPoint(&p);
+	prontPoint(&p);
 	double angle = PI / 4;
 	rotate(&p, angle);
 	prontPoint(&p);
