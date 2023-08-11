@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 
 #include "point.h"
 #include "matrix.h"
@@ -71,10 +72,19 @@ int getImg() {
 			printf("file closedn't\n");
 		}
 	}
+	int rotations = 72;
+	double* angles = linspace(0, 2 * PI, rotations);
+	for (int i = 0; i < rotations; i++) {
+		// printf("%lf\n", angles[i]);
+		clear();
+		rotateThemPoints(pmat, angles[i]);
+		Sleep(1/24);
+	}
+	free(angles);
 
-	double angle = PI / 4;
-	clear();
-	rotateThemPoints(pmat, angle);
+	// double angle = PI / 4;
+	// clear();
+	// rotateThemPoints(pmat, angle);
 	// printImage(pmat);
 	 
 
@@ -104,8 +114,7 @@ void rotateThemPoints(Point* points, double angle) {
 			rotate(&points[i * len + j], angle);
 			calculate_index(&points[i * len + j], len / 2);
 			gotoxy(points[i * len + j].idx_x, points[i * len + j].idx_y);
-			char c = points[i * len + j].c;
-			printf("%c%c%c", c, c, c);
+			printf("%c", points[i * len + j].c);
 		}
 	}
 }

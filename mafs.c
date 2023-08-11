@@ -65,3 +65,25 @@ void prontVec(double* vec, int len, const char* name) {
 	}
 	printf("\n");
 }
+
+double* linspace(double start, double stop, double size) {
+	double* nums;
+	nums = (double*)malloc(sizeof(double) * size);
+	if (nums == NULL) {
+		fprintf(stderr, "couldn't realloc linspace array\n");
+		return nums;
+	}
+	double step = (stop - start) / (size - 1);
+	double val = start;
+	for (int i = 0; i < size; i++) {
+		if (i < size - 1) {
+			nums[i] = val;
+			val += step;
+		}
+		else {
+			nums[i] = stop;
+		}
+		
+	}
+	return nums;
+}
