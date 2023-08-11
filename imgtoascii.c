@@ -15,21 +15,23 @@ long long len = 50;
 FILE* file;
 
 void printImage(Point* points);
-void rotateThemPoints(Point* points);
+void rotateThemPoints(Point* buffer1, Point* buffer2, double angle, int buffer_flag);
+void thething(Point* points, Point* prevts);
 
 int getImg() {
 	// let's assume we are only dealing with square images / matrices
 	long long len = 50; // overkill but VS yells at me
-	Point* pmat = (Point*)malloc(len * len * sizeof(Point));
+	Point* points = (Point*)malloc(len * len * sizeof(Point));
+	Point* prevts = (Point*)malloc(len * len * sizeof(Point));
 
-	if (pmat == NULL) {
-		printf("something went wrong with malloc\n");
+	if (points == NULL || prevts == NULL) {
+		fprintf(stderr, "something went wrong with malloc\n");
 		return 1;
 	}
 
 	for (int i = 0; i < len * len; i++)
 	{
-		pmat[i] = newPoint(' ', -1, -1, -1);
+		points[i] = newPoint(' ', -1, -1, -1);
 	}
 
 	errno_t err;
@@ -50,14 +52,16 @@ int getImg() {
 				break;
 			}
 			Point p = newPoint(c, j, uh, len / 2);
-			pmat[i] = p;
+			Point q = newPoint(c, j, uh, len / 2);
+			prevts[i] = q;
+			points[i] = p;
 			i++;
 			uh++;
 			if (i % len == 0) {
 				j++;
 			}
 		} while (1);
-		printImage(pmat);
+		// printImage(points);
 	}
 	else {
 		fprintf(stderr, "file couldn't be opened\n");
@@ -72,51 +76,71 @@ int getImg() {
 			printf("file closedn't\n");
 		}
 	}
+
+	thething(points, prevts);
+
+	free(points);
+	free(prevts);
+}
+
+void thething(Point* points, Point* prevts) {
 	int rotations = 72;
+	int flag = 1;
 	double* angles = linspace(0, 2 * PI, rotations);
+	clear();
+
 	for (int i = 0; i < rotations; i++) {
 		// printf("%lf\n", angles[i]);
-		clear();
-		rotateThemPoints(pmat, angles[i]);
-		Sleep(1/24);
+		rotateThemPoints(points, prevts, angles[i], --flag);
+		flag += 2;
+		Sleep(1 / 24);
 	}
+
 	free(angles);
 
-	// double angle = PI / 4;
-	// clear();
-	// rotateThemPoints(pmat, angle);
-	// printImage(pmat);
-	 
-
-	/*Point p = pmat[78];
-	prontPoint(&p);
 	
-	rotate(&p, angle);
-	prontPoint(&p);*/
-
-	free(pmat);
 }
 
-/*
-void uh(Point* points) {
-	for (int i = 0; i < len; i++) {
-		for (int j = 0; j < len; j++) {
 
+void rotateThemPoints(Point* buffer1, Point* buffer2, double angle, int buffer_flag) {
+	int idx = 0;
+	if (buffer_flag == 0) {
+		// compare to buffer 2, write to buffer 1
+		printf("rotate buffer 1 with angle %lf\n", angle);
+
+		for (int i = 0; i < len; i++) {
+			for (int j = 0; j < len; j++) {
+				idx = i * len + j;
+				rotate(&buffer1[idx], angle);
+				calculate_index(&buffer1[idx], len / 2);
+
+				if (buffer2[idx].c == buffer1[idx].c) {
+					gotoxy(buffer1[idx].idx_x, buffer1[idx].idx_y);
+					printf("%c", buffer1[idx].c);
+				}
+			}
 		}
+
 	}
-}
+	else {
+		// compare with buffer 1, write to buffer 2
+		printf("rotate buffer 2 with angle %lf\n", angle);
 
-*/
+		for (int i = 0; i < len; i++) {
+			for (int j = 0; j < len; j++) {
+				idx = i * len + j;
+				rotate(&buffer2[idx], angle);
+				calculate_index(&buffer2[idx], len / 2);
 
-void rotateThemPoints(Point* points, double angle) {
-	for (int i = 0; i < len; i++) {
-		for (int j = 0; j < len; j++) {
-			rotate(&points[i * len + j], angle);
-			calculate_index(&points[i * len + j], len / 2);
-			gotoxy(points[i * len + j].idx_x, points[i * len + j].idx_y);
-			printf("%c", points[i * len + j].c);
+				if (buffer1[idx].c == buffer2[idx].c) {
+					gotoxy(buffer2[idx].idx_x, buffer2[idx].idx_y);
+					printf("%c", buffer2[idx].c);
+				}
+			}
 		}
+
 	}
+	
 }
 
 
