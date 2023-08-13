@@ -83,18 +83,33 @@ int getImg() {
 	free(prevts);
 }
 
+void pront(Point* points) {
+	for (int i = 0; i < len; i++) {
+		for (int j = 0; j < len; j++) {
+			gotoxy(points[i * len + j].idx_x, points[i * len + j].idx_y);
+			printf("%c", points[i * len + j].c);
+		}
+	}
+}
+
 void thething(Point* points, Point* prevts) {
 	int rotations = 72;
 	int flag = 1;
 	double* angles = linspace(0, 2 * PI, rotations);
 	clear();
+	rotateThemPoints(points, prevts, PI / 4, 1);
+	pront(prevts);
+	
+	
 
-	for (int i = 0; i < rotations; i++) {
-		// printf("%lf\n", angles[i]);
-		rotateThemPoints(points, prevts, angles[i], --flag);
-		flag += 2;
-		Sleep(1 / 24);
-	}
+	// printImage(points);
+
+	//for (int i = 0; i < rotations; i++) {
+	//	// printf("%lf\n", angles[i]);
+	//	rotateThemPoints(points, prevts, angles[i], --flag);
+	//	flag += 2;
+	//	Sleep(1 / 24);
+	//}
 
 	free(angles);
 
@@ -105,51 +120,33 @@ void thething(Point* points, Point* prevts) {
 void rotateThemPoints(Point* buffer1, Point* buffer2, double angle, int buffer_flag) {
 	int idx = 0;
 	if (buffer_flag == 0) {
-		// compare to buffer 2, write to buffer 1
-		printf("rotate buffer 1 with angle %lf\n", angle);
-
 		for (int i = 0; i < len; i++) {
 			for (int j = 0; j < len; j++) {
 				idx = i * len + j;
 				rotate(&buffer1[idx], angle);
 				calculate_index(&buffer1[idx], len / 2);
-
-				if (buffer2[idx].c == buffer1[idx].c) {
-					gotoxy(buffer1[idx].idx_x, buffer1[idx].idx_y);
-					printf("%c", buffer1[idx].c);
-				}
 			}
 		}
 
 	}
 	else {
-		// compare with buffer 1, write to buffer 2
-		printf("rotate buffer 2 with angle %lf\n", angle);
-
 		for (int i = 0; i < len; i++) {
 			for (int j = 0; j < len; j++) {
 				idx = i * len + j;
 				rotate(&buffer2[idx], angle);
 				calculate_index(&buffer2[idx], len / 2);
-
-				if (buffer1[idx].c == buffer2[idx].c) {
-					gotoxy(buffer2[idx].idx_x, buffer2[idx].idx_y);
-					printf("%c", buffer2[idx].c);
-				}
 			}
 		}
-
 	}
-	
 }
 
 
 void printImage(Point* points) {
-	clear();
+	// clear();
 	for (int i = 0; i < len; i++) {
 		for (int j = 0; j < len; j++) {
 			char c = points[i * len + j].c;
-			printf("%c%c%c", c, c, c);
+			printf("%c", c);
 		}
 		printf("\n");
 	}
