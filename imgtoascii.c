@@ -92,13 +92,50 @@ void pront(Point* points) {
 	}
 }
 
+void prent(Point* buffer1, Point* buffer2, int flag) {
+	int x1, y1, x2, y2;
+	for (int i = 0; i < len; i++) {
+		for (int j = 0; j < len; j++) {
+			if (flag == 0) {
+				// write to buffer1
+				x1 = buffer1[i * len + j].idx_x;
+				y1 = buffer1[i * len + j].idx_y;
+				x2 = buffer2[i * len + j].idx_x;
+				y2 = buffer2[i * len + j].idx_y;
+
+				if (buffer2[x2 * len + y2].c != buffer1[x1 * len + y2].c) {
+					gotoxy(x1, y1);
+					printf("%c", 'o');
+				}
+
+			}
+			else {
+				// write to buffer2
+				x1 = buffer1[i * len + j].idx_x;
+				y1 = buffer1[i * len + j].idx_y;
+				x2 = buffer2[i * len + j].idx_x;
+				y2 = buffer2[i * len + j].idx_y;
+
+				printf("c1: %c\nc2: %c\n", buffer1[x1 * len + y1].c, buffer2[x2 * len + y2].c);
+				
+
+				if (buffer2[x2 * len + y2].c != buffer1[x1 * len + y1].c) {
+					gotoxy(x2, y2);
+					printf("%c", buffer2[i * len + j].c);
+				}
+			}
+		}
+	}
+}
+
 void thething(Point* points, Point* prevts) {
 	int rotations = 72;
 	int flag = 1;
 	double* angles = linspace(0, 2 * PI, rotations);
 	clear();
+	pront(points);
 	rotateThemPoints(points, prevts, PI / 4, 1);
-	pront(prevts);
+	prent(points, prevts, 1);
 	
 	
 

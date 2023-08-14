@@ -54,9 +54,8 @@ void calculate_index(Point* p, int mid) {
 }
 
 void prontPoint(Point* p) {
-	printf("%5s %5c %10s %4c %10s\n", "idx", ' ', "coords", ' ', "rotated");
+	printf("%5s %5c %10s\n", "idx", ' ', "coords");
 	printf("--------------------------------------\n");
-	printf("[%d, %d] %3c (%.2lf, %.2lf) %3c (%.2lf, %.2lf)\n", p->idx_x,              p->idx_y, ' ',
-															   p->coords.values[0],   p->coords.values[1], ' ',
-															   p->r_coords.values[0], p->r_coords.values[1]);
+	printf("[%d, %d] %3c (%.2lf, %.2lf)\n", p->idx_x,              p->idx_y, ' ',
+											p->coords.values[0],   p->coords.values[1]);
 }
