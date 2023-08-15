@@ -116,13 +116,27 @@ void prent(Point* buffer1, Point* buffer2, int flag) {
 				x2 = buffer2[i * len + j].idx_x;
 				y2 = buffer2[i * len + j].idx_y;
 
-				printf("c1: %c\nc2: %c\n", buffer1[x1 * len + y1].c, buffer2[x2 * len + y2].c);
-				
+				// printf("c1: %c\nc2: %c\n", buffer1[x1 * len + y1].c, buffer2[x2 * len + y2].c);
+				/*gotoxy(x2, y2);
+				printf("%c", 'x');*/
+				gotoxy(i, j);
+				// printf("%c", ' ');
 
-				if (buffer2[x2 * len + y2].c != buffer1[x1 * len + y1].c) {
+				if (buffer1[x2 * len + y2].c == buffer2[x1 * len + y1].c) {
 					gotoxy(x2, y2);
-					printf("%c", buffer2[i * len + j].c);
+					printf("%c", 'o');
+					continue;
 				}
+
+ 				if (buffer2[x2 * len + y2].c != buffer1[x1 * len + y1].c) {
+					gotoxy(x2, y2);
+					printf("%c", 'x');
+					continue;
+				}
+				
+				
+				
+				
 			}
 		}
 	}
@@ -135,6 +149,9 @@ void thething(Point* points, Point* prevts) {
 	clear();
 	pront(points);
 	rotateThemPoints(points, prevts, PI / 4, 1);
+	// prevts[0].c = 'o';
+	//printf("%c", prevts[0].c);
+	// pront(prevts);
 	prent(points, prevts, 1);
 	
 	
