@@ -11,6 +11,7 @@ np.set_printoptions(threshold=sys.maxsize)
 """
 50x50 matrix to cartesian matrix
 simple point class to represent a character in the matrix
+well let's see
 """
 
 
