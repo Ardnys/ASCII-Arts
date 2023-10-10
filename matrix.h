@@ -1,16 +1,19 @@
-#pragma once
+//
+// Created by Emre on 10/7/2023.
+//
+
+#ifndef SPINNING_IMAGE_CLI_MATRIX_H
+#define SPINNING_IMAGE_CLI_MATRIX_H
 
 typedef struct {
-	int rows;
-	int cols;
-	double* values;
+    int rows;
+    int cols;
+    double* values;
 } Matrix;
 
-void initMatrix(Matrix* matrix, int r, int c, double* vals, int size);
-int get(Matrix* matrix, int i, int j);
-void freeValues(Matrix* matrix);
+void initMatrix(Matrix* matrix, int r, int c, const double* values, int size);
+double get(Matrix* matrix, int i, int j);
+void freeMatrix(Matrix* matrix);
 void print(Matrix* matrix);
 
-// i don't need these functions now but i might implement them just for fun later
-// int* getRow(Matrix* matrix, int* row, int i);
-// int* getCol(Matrix* matrix, int* col, int j);
+#endif //SPINNING_IMAGE_CLI_MATRIX_H
